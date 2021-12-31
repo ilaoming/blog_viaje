@@ -1,0 +1,27 @@
+body{
+  background-image: url("../images/fondo.jpg");
+  color :aliceblue !important;
+}
+
+p{
+  color: black !important;
+}
+
+.card-enlace{
+  text-decoration: none !important;
+}
+
+.text-logo{
+  font-family: 'Amatic SC', cursive !important;
+  font-size: 35px !important;
+}
+
+.img-post{
+  width: 100%;
+  height: 210px;
+}
+
+.fondo-registro{
+  background-image: url("../images/fondo-registro.png");
+  color :aliceblue !important;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <% include ./partials/head %>
+  <title>Blog Viajes</title>
+</head>
+
+
+<body>
+<% include ./partials/encabezado_publico %>
+  <div class="container mt-4 col-md-12">
+    <h1 class="">Inicio</h1>
+    <p class="text-white">Aquí nuestras últimas publicaciones:</p>
+
+    <div class="row mx-auto">
+      <% publicaciones.forEach(publicacion => { %>
+        <div class="card my-2 ml-auto col-sm-12 col-lg-3 col-md-6 ">
+          <img class="card-img-top mt-2 rounded img-post" src="<%= publicacion.foto %>" alt="Card image cap">
+          <div class="card-body">
+            <h3 class="card-title"><a href="" class="card-enlace text-dark"><%=publicacion.titulo%> </a><span class="btn btn-outline-success rounded-pill"><%=publicacion.votos%></span></h3>
+            <p class="card-text"><%= publicacion.resumen %></p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <h6 class="section dark">
+                <i class="fas fa-user-tie"  style="color: cadetblue;"></i>
+                <%=publicacion.pseudonimo%> -
+                <i class="fas fa-calendar-day" style="color: cadetblue;"></i>
+                <%= publicacion.fecha_hora.getFullYear() %>/
+                <%= publicacion.fecha_hora.getMonth()+1 %>/
+                <%= publicacion.fecha_hora.getDate() %>
+              </h6>
+            </li>
+          </ul>
+        </div>
+      <% }) %>
+
+    </div>
+  </div>
+
+  <% include ./partials/pie %> 
+  <% include ./partials/script %> 
+</body>
+
+</html>

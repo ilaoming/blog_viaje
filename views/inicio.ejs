@@ -1,0 +1,48 @@
+<head>
+    <% include ./partials/head %>
+    <title>Blog de Viajes / Inicio</title>
+  </head>
+  
+  <body>
+    <% include ./partials/encabezado_publico %>
+  
+    <div class="container mt-5 col-md-4 border border-2 rounded ">
+      <h1>Inicio de Sesión</h1>
+      <p class="text-white">Ingresa tus credenciales para ingresar</p>
+  
+      <div class="row">
+  
+        <div class="">
+  
+          <% if (mensaje && mensaje.length > 0) { %>
+          <h4><span class="icon-info"></span>
+            <%=mensaje%></h4>
+          <% } %>
+          <form action="/procesar_inicio" method="post">
+            <label for="email">Email</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="email"><i class="fas fa-envelope-square"></i></span>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese Email">
+            </div>
+
+            <label for="contrasena">Contraseña</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="contrasena"><i class="fas fa-lock"></i></span>
+              <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Ingrese Contraseña">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Continuar</button>
+
+          </form>
+          
+        </div>
+  
+      </div>
+  
+    </div>
+  
+    <% include ./partials/pie %>
+    <% include ./partials/script %> 
+  </body>
+  
+  </html>

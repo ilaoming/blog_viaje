@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ./partials/head %>
+    <title>Blog de Viajes / Registro</title>
+</head>
+<body>
+    <% include ./partials/encabezado_publico %> 
+    <div class="container mt-4 col-md-4 border border-2 rounded fondo-registro">
+        <% if (mensaje && mensaje.length > 0) { %>
+            <h5 class="text-white mt-4"><i class="fas fa-info-circle"></i>
+              <%=mensaje%></h5>
+        <% } %>
+
+        <h1 class="mt-4 ">Registro de autores</h1>
+            <P class="text-white">Ingresa tus datos para ser un nuevo autor</P>
+            <div class="row">
+                <form action="/procesar_registro" method="post">
+                    <label for="email">Email</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="email"><i class="fas fa-envelope-square"></i></span>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese Email" required="true"> 
+                    </div>
+                    
+                    
+                    <label for="contrasena">Contraseña</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="contrasena"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Ingrese Contrasena" required="true">
+                    </div>
+
+                    <label for="pseudonimo">Pseudonimo</label>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="pseudonimo"><i class="fas fa-user-secret"></i></span>
+                        <input type="text" class="form-control" id="pseudonimo" name="pseudonimo" placeholder="Ingrese Pseudonimo" required="true">
+                    </div>
+    
+                    <input type="submit" class="btn btn-primary mb-3" value="Continuar">
+    
+                </form>
+            </div>
+    </div>
+  <% include ./partials/pie %>
+  <% include ./partials/script %>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+    <title>Blog de Viajes / Admin</title>
+</head>
+<body>
+    <% include ../partials/encabezado_privado %>
+    <div class="container mt-4 col-md-10">
+        <h4 class="text">Admin - mis publicaciones:</h4>
+
+        <% if (mensaje && mensaje.length > 0) { %>
+          <h5 class="text-white mt-4"><i class="fas fa-info-circle"></i>
+            <%=mensaje%></h5>
+        <% } %>
+
+        
+        <div class="row mx-auto">
+          <table class="table table-sm table-hover bg-white border border-2 rounded">
+            <thead>
+              <tr>
+                <th scope="col"><i class="fas fa-barcode"></i> Codigo</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Resumen</th>
+                <th scope="col">Votos</th>
+                <th scope="col">Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% publicaciones.forEach( (publicacion) => { %>
+              <tr>
+                <td>
+                  <%=publicacion.id%>
+                </td>
+                <td>
+                  <%=publicacion.titulo%>
+                </td>
+                <td>
+                  <%=publicacion.resumen%>
+                </td>
+                <td>
+                  <%=publicacion.votos%>
+                </td>
+                <td>
+                  <%= publicacion.fecha_hora.getFullYear() %>/
+                  <%= publicacion.fecha_hora.getMonth()+1 %>/
+                  <%= publicacion.fecha_hora.getDate() %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+        <a name="" id="" class="btn btn-primary" href="/admin/agregar" role="button"><i class="fas fa-plus-square"></i> Nueva Publicacion</a>
+      </div>
+
+    <% include ../partials/pie %>
+    <% include ../partials/script %> 
+</body>
+</html>

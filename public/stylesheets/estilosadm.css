@@ -1,0 +1,9 @@
+body{
+    background-image: url("../images/fondo.jpg");
+    color :aliceblue !important;
+  }
+
+  .text-logo{
+    font-family: 'Amatic SC', cursive !important;
+    font-size: 35px !important;
+  }
