@@ -10,7 +10,7 @@
         <h4 class="text">Admin - mis publicaciones:</h4>
 
         <% if (mensaje && mensaje.length > 0) { %>
-          <h5 class="text-white mt-4"><i class="fas fa-info-circle"></i>
+          <h5 class="text-warning mt-4"><i class="fas fa-info-circle"></i>
             <%=mensaje%></h5>
         <% } %>
 
@@ -24,6 +24,8 @@
                 <th scope="col">Resumen</th>
                 <th scope="col">Votos</th>
                 <th scope="col">Fecha</th>
+                <th scope="col">Editar</th>
+                <th scope="col">Eliminar</th>
               </tr>
             </thead>
             <tbody>
@@ -45,6 +47,12 @@
                   <%= publicacion.fecha_hora.getFullYear() %>/
                   <%= publicacion.fecha_hora.getMonth()+1 %>/
                   <%= publicacion.fecha_hora.getDate() %>
+                </td>
+                <td>
+                  <a name="" id="" class="btn btn-warning" href="/admin/actualizar_publicacion?id=<%=publicacion.id%>" role="button"><i class="far fa-edit"></i></a>
+                </td>
+                <td>
+                  <a name="" id="" class="btn btn-danger" href="/admin/eliminar_publicacion?id=<%=publicacion.id%>" role="button"><i class="fas fa-trash-alt"></i></a>
                 </td>
               </tr>
               <% }) %>

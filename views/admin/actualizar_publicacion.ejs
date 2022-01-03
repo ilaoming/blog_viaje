@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+    <title>Admin / Actualizar</title>
+</head>
+<body>
+    <% include ../partials/encabezado_privado %>
+    <div class="container mt-4 col-mb-6">
+        <% if (mensaje && mensaje.length > 0) { %>
+            <h5 class="text-warning mt-4"><i class="fas fa-info-circle"></i>
+              <%=mensaje%></h5>
+          <% } %>
+
+          <form action="/admin/procesar_editar" method="post">
+            <div class="mb-2">
+                <input type="hidden" id="autor_id" name="autor_id" class="form-control" value="<%=publicacion.autor_id%>">
+            </div>
+
+            <div class="mb-2">
+                <label for="id" class="form-label"><i class="fas fa-barcode"></i> Codigo : <%=publicacion.id%></label>
+                <input type="hidden" id="id" name="id" class="form-control" value="<%=publicacion.id%>">
+            </div>
+
+            <label for="titulo">Titulo</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="titulo"><i class="fas fa-signature"></i></span>
+                <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ingrese titulo" aria-label="titulo" value="<%=publicacion.titulo%>">
+            </div>
+
+            <label for="foto">Foto</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="foto"><i class="fas fa-link"></i></span>
+                <input type="text" class="form-control" id="foto" name="foto" placeholder="Pega aqui el link de tu foto" aria-label="foto" value="<%=publicacion.foto%>">
+            </div>
+
+            <label for="resumen">Resumen</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                <textarea class="form-control" id="resumen" name="resumen" aria-label="resumen"><%=publicacion.resumen%></textarea>
+            </div>
+            
+            <label for="contenido">Contenido</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-feather-alt"></i></span>
+                <textarea class="form-control" id="contenido" name="contenido" aria-label="contenido"><%=publicacion.contenido%></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Actualizar</button>
+
+        </form>
+
+
+
+
+
+
+    </div>
+</body>
+</html>

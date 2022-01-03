@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+    <title>Agregar / Admin</title>
+</head>
+<body>
+    <% include ../partials/encabezado_privado %>
+    <div class="container mt-4 col-md-5">
+
+            <h3 class="text mb-4">Datos de la publicacion</h3>
+    
+            <% if (mensaje && mensaje.length > 0) { %>
+              <h5 class="text-white mt-4"><i class="fas fa-info-circle"></i>
+                <%=mensaje%></h5>
+            <% } %>
+
+        <form action="/admin/procesar_agregar" method="post">
+            <label for="titulo">Titulo</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="titulo"><i class="fas fa-signature"></i></span>
+                <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ingrese titulo" aria-label="titulo">
+            </div>
+
+            <label for="foto">Foto</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="foto"><i class="fas fa-link"></i></span>
+                <input type="text" class="form-control" id="foto" name="foto" placeholder="Pega aqui el link de tu foto" aria-label="foto">
+            </div>
+
+            <label for="resumen">Resumen</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-signature"></i></span>
+                <textarea class="form-control" id="resumen" name="resumen" aria-label="resumen"></textarea>
+            </div>
+            
+            <label for="contenido">Contenido</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text"><i class="fas fa-feather-alt"></i></span>
+                <textarea class="form-control" id="contenido" name="contenido" aria-label="contenido"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
+
+        </form>
+
+        <!-- Texto enriquecido 
+        <script>
+            ClassicEditor
+              .create(document.querySelector('#contenido'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                heading: {
+                  options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' }
+                  ]
+                }
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          </script> -->
+          
+    </div>
+    <% include ../partials/pie %>
+    <% include ../partials/script %> 
+</body>
+</html>
