@@ -1,6 +1,6 @@
-const express = require('express')
-const router = express.Router()
-const mysql = require('mysql')
+const express = require("express");
+const router = express.Router();
+const mysql = require("mysql");
 
 var pool = mysql.createPool({
   connectionLimit: 20,
@@ -10,15 +10,13 @@ var pool = mysql.createPool({
   database: "blog_viaje",
 });
 
-router.use('/admin/', (req, res, next) => {
+router.use("/admin/", (req, res, next) => {
   if (!req.session.usuario) {
-    req.flash('mensaje', 'Debe iniciar sesión')
-    res.redirect("/inicio")
+    req.flash("mensaje", "Debe iniciar sesión");
+    res.redirect("/inicio");
+  } else {
+    next();
   }
-  else {
-    next()
-  }
-})
+});
 
-
-module.exports = router
+module.exports = router;
