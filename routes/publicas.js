@@ -1,6 +1,6 @@
-const express = require('express')
-const router = express.Router()
-const mysql = require('mysql')
+const express = require("express");
+const router = express.Router();
+const mysql = require("mysql");
 
 var pool = mysql.createPool({
   connectionLimit: 20,
@@ -62,7 +62,7 @@ router.post("/procesar_registro", function (req, res) {
             req.flash("mensaje", "Pseudonimo Duplicado");
             res.redirect("/registro");
           } else {
-          const query = `
+            const query = `
           INSERT INTO 
           autores
           (email,contrasena,pseudonimo)
@@ -75,7 +75,7 @@ router.post("/procesar_registro", function (req, res) {
             connection.query(query, function (error, filas, campos) {
               console.log(req.body);
               req.flash("mensaje", "Usuario Registrado");
-              res.redirect('/registro');
+              res.redirect("/registro");
             });
           }
         });
@@ -86,13 +86,11 @@ router.post("/procesar_registro", function (req, res) {
   });
 });
 
+router.get("/inicio", function (req, res) {
+  res.render("inicio", { mensaje: req.flash("mensaje") });
+});
 
-router.get('/inicio', function (req, res) {
-  res.render('inicio', { mensaje: req.flash('mensaje') })
-})
-
-
-router.post('/procesar_inicio', function (req, res) {
+router.post("/procesar_inicio", function (req, res) {
   pool.getConnection(function (err, connection) {
     const query = `
       SELECT *
@@ -100,19 +98,17 @@ router.post('/procesar_inicio', function (req, res) {
       WHERE
       email = ${connection.escape(req.body.email)} AND
       contrasena = ${connection.escape(req.body.contrasena)}
-    `
+    `;
     connection.query(query, function (error, filas, campos) {
       if (filas.length > 0) {
-        req.session.usuario = filas[0]
-        res.redirect('/admin/index')
+        req.session.usuario = filas[0];
+        res.redirect("/admin/index");
+      } else {
+        req.flash("mensaje", "Datos inválidos");
+        res.redirect("/inicio");
       }
-      else {
-        req.flash('mensaje', 'Datos inválidos')
-        res.redirect('/inicio')
-      }
-
-    })
-    connection.release()
-  })
-})
-module.exports = router
+    });
+    connection.release();
+  });
+});
+module.exports = router;
