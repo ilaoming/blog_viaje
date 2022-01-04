@@ -156,21 +156,21 @@ router.post("/admin/procesar_editar", (req, res) => {
   });
 });
 
-router.get("/admin/procesar_eliminar", function (req,res) {
-  pool.getConnection(function (err,connection) { 
+router.get("/admin/procesar_eliminar", function (req, res) {
+  pool.getConnection(function (err, connection) {
     const query = `
     DELETE FROM
     publicaciones
     WHERE id = ${connection.escape(req.query.id)}
     AND
     autor_id = ${connection.escape(req.session.usuario.id)}
-    `
-    connection.query(query,function (error,filas,campos) { 
-      req.flash('mensaje','Publicacion eliminada')
+    `;
+    connection.query(query, function (error, filas, campos) {
+      req.flash("mensaje", "Publicacion eliminada");
       res.redirect("/admin/index");
-     })
-     connection.release();
-   })
+    });
+    connection.release();
+  });
 });
 
 module.exports = router;
