@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ./partials/head %>
+    <title>Detalles de publicación</title>
+</head>
+<body>
+    <% include ./partials/encabezado_publico %>
+    <div class="container mt-4 col-md-10">
+        <div class="row mx-auto">
+            <% publicaciones.forEach(publicacion => { %>
+            <div class="card my-2 ml-auto col-sm-12 col-lg-3 col-md-6">
+              <img
+                class="card-img-top mt-2 rounded img-post"
+                src="<%= publicacion.foto %>"
+                alt="Card image cap"
+              />
+              <div class="card-body">
+                <h3 class="card-title">
+                  <a href="/detalles?id=<%=publicacion.id%>" class="card-enlace text-dark"
+                    ><%=publicacion.titulo%> </a>
+                </h3>
+                <p class="card-text"><%= publicacion.contenido %></p>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+    </div>
+    <% include ./partials/pie %> <% include ./partials/script %>
+</body>
+</html>

@@ -35,15 +35,16 @@ router.get("/", function (req, res) {
       `;
     }
     query = `
-      SELECT
-      foto, titulo, resumen, fecha_hora, pseudonimo, votos
-      FROM publicaciones
-      INNER JOIN autores
-      ON publicaciones.autor_id = autores.id
-      ${modificadorConsulta}
-      ORDER BY fecha_hora DESC
-      ${modificadorPagina}
+    SELECT
+    publicaciones.id id, titulo, resumen, foto, fecha_hora, pseudonimo, votos
+    FROM publicaciones
+    INNER JOIN autores
+    ON publicaciones.autor_id = autores.id
+    ${modificadorConsulta}
+    ORDER BY fecha_hora DESC
+    ${modificadorPagina}
     `;
+
     connection.query(query, function (error, filas, campos) {
       res.render("index", {
         publicaciones: filas,
@@ -133,6 +134,25 @@ router.post("/procesar_inicio", function (req, res) {
       } else {
         req.flash("mensaje", "Datos inválidos");
         res.redirect("/inicio");
+      }
+    });
+    connection.release();
+  });
+});
+
+router.get("/detalles", function (req, res) {
+  pool.getConnection(function (err, connection) {
+    const query = `
+    SELECT 
+    titulo,contenido,foto
+    FROM publicaciones 
+    WHERE id = ${connection.escape(req.query.id)}
+    `;
+    connection.query(query, function (error, filas, campo) {
+      if (filas.length > 0) {
+        res.render("detalles", { publicaciones: filas });
+      } else {
+        res.redirect("/");
       }
     });
     connection.release();
