@@ -12,27 +12,27 @@ var pool = mysql.createPool({
 
 router.get("/", function (req, res) {
   pool.getConnection(function (err, connection) {
-    let query
-    let modificadorConsulta = ""
-    let pagina = 0
-    let modificadorPagina = ""
-    const busqueda = ( req.query.busqueda ) ? req.query.busqueda : ""
-    if (busqueda != ""){
+    let query;
+    let modificadorConsulta = "";
+    let pagina = 0;
+    let modificadorPagina = "";
+    const busqueda = req.query.busqueda ? req.query.busqueda : "";
+    if (busqueda != "") {
       modificadorConsulta = `
         WHERE
         titulo LIKE '%${busqueda}%' OR
         resumen LIKE '%${busqueda}%' OR
         contenido LIKE '%${busqueda}%'
-      `
-      modificadorPagina = ""
-    }else{
-      pagina = (req.query.pagina) ? parseInt(req.query.pagina) : 0
+      `;
+      modificadorPagina = "";
+    } else {
+      pagina = req.query.pagina ? parseInt(req.query.pagina) : 0;
       if (pagina < 0) {
-        pagina = 0
+        pagina = 0;
       }
       modificadorPagina = `
-      LIMIT 4 OFFSET ${pagina*4}
-      `
+      LIMIT 4 OFFSET ${pagina * 4}
+      `;
     }
     query = `
       SELECT
@@ -45,7 +45,11 @@ router.get("/", function (req, res) {
       ${modificadorPagina}
     `;
     connection.query(query, function (error, filas, campos) {
-      res.render("index", { publicaciones: filas, busqueda : busqueda, pagina : pagina });
+      res.render("index", {
+        publicaciones: filas,
+        busqueda: busqueda,
+        pagina: pagina,
+      });
     });
     connection.release();
   });
