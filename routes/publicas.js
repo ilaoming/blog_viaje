@@ -12,17 +12,40 @@ var pool = mysql.createPool({
 
 router.get("/", function (req, res) {
   pool.getConnection(function (err, connection) {
-    const query = `
+    let query
+    let modificadorConsulta = ""
+    let pagina = 0
+    let modificadorPagina = ""
+    const busqueda = ( req.query.busqueda ) ? req.query.busqueda : ""
+    if (busqueda != ""){
+      modificadorConsulta = `
+        WHERE
+        titulo LIKE '%${busqueda}%' OR
+        resumen LIKE '%${busqueda}%' OR
+        contenido LIKE '%${busqueda}%'
+      `
+      modificadorPagina = ""
+    }else{
+      pagina = (req.query.pagina) ? parseInt(req.query.pagina) : 0
+      if (pagina < 0) {
+        pagina = 0
+      }
+      modificadorPagina = `
+      LIMIT 4 OFFSET ${pagina*4}
+      `
+    }
+    query = `
       SELECT
       foto, titulo, resumen, fecha_hora, pseudonimo, votos
       FROM publicaciones
       INNER JOIN autores
       ON publicaciones.autor_id = autores.id
+      ${modificadorConsulta}
       ORDER BY fecha_hora DESC
-      LIMIT 10
+      ${modificadorPagina}
     `;
     connection.query(query, function (error, filas, campos) {
-      res.render("index", { publicaciones: filas });
+      res.render("index", { publicaciones: filas, busqueda : busqueda, pagina : pagina });
     });
     connection.release();
   });

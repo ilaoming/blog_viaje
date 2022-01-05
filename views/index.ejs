@@ -11,6 +11,18 @@
       <h1 class="">Inicio</h1>
       <p class="text-white">Aquí nuestras últimas publicaciones:</p>
 
+      <form class="d-flex col-6 mb-2" action="/">
+        <input
+          id="busqueda"
+          name="busqueda"
+          class="form-control me-2"
+          type="search"
+          placeholder="Busqueda de publicaciones"
+          aria-label="Search"
+        />
+        <button class="btn btn-success" type="submit">Buscar</button>
+      </form>
+
       <div class="row mx-auto">
         <% publicaciones.forEach(publicacion => { %>
         <div class="card my-2 ml-auto col-sm-12 col-lg-3 col-md-6">
@@ -45,6 +57,15 @@
         <% }) %>
       </div>
     </div>
+    <div class="container col-md-2">
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li class="page-item"><a class="page-link" href="/?pagina=<%=pagina-1%>">Anterior</a></li>
+          <li class="page-item"><a class="page-link" href="/?pagina=<%=pagina+1%>">Siguiente </a></li>
+        </ul>
+      </nav>
+    </div>
+
 
     <% include ./partials/pie %> <% include ./partials/script %>
   </body>
