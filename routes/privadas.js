@@ -84,43 +84,19 @@ router.get("/admin/actualizar_publicacion", function (req, res) {
             usuario: req.session.usuario,
           });
         } else {
-          const query_admin_index = `
-            SELECT * FROM
-            publicaciones
-            WHERE 
-            autor_id = ${connection.escape(req.session.usuario.id)}
-            `;
-          connection.query(query_admin_index, function (error, filas, campo) {
-            req.flash("mensaje", "Esta publicacion no le pertenece");
-            res.render("admin/index", {
-              usuario: req.session.usuario,
-              mensaje: req.flash("mensaje"),
-              publicaciones: filas,
-            });
-          });
+          req.flash("mensaje", "Esta publicacion no le pertenece");
+          res.redirect("/admin/index");
         }
       } else {
-        const query_admin_index = `
-            SELECT * FROM
-            publicaciones
-            WHERE 
-            autor_id = ${connection.escape(req.session.usuario.id)}
-            `;
-        connection.query(query_admin_index, function (error, filas, campo) {
-          req.flash("mensaje", "Publicacion no encontrada");
-          res.render("admin/index", {
-            usuario: req.session.usuario,
-            mensaje: req.flash("mensaje"),
-            publicaciones: filas,
-          });
-        });
+        req.flash("mensaje", "Publicacion no encontrada");
+        res.redirect("/admin/index");
       }
     });
     connection.release();
   });
 });
 
-router.post("/admin/procesar_editar", (req, res) => {
+router.post("/admin/procesar_actualizar", (req, res) => {
   pool.getConnection((err, connection) => {
     if (
       req.body.titulo != "" &&

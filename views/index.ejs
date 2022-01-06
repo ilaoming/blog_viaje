@@ -23,6 +23,12 @@
         <button class="btn btn-success" type="submit">Buscar</button>
       </form>
 
+      <% if (mensaje && mensaje.length > 0) { %>
+      <h5 class="text-warning mt-4">
+        <i class="fas fa-info-circle"></i> <%=mensaje%>
+      </h5>
+      <% } %>
+      
       <div class="row mx-auto">
         <% publicaciones.forEach(publicacion => { %>
         <div class="card my-2 ml-auto col-sm-12 col-lg-3 col-md-6">
@@ -33,7 +39,9 @@
           />
           <div class="card-body">
             <h3 class="card-title">
-              <a href="/detalles?id=<%=publicacion.id%>" class="card-enlace text-dark"
+              <a
+                href="/detalles?id=<%=publicacion.id%>"
+                class="card-enlace text-dark"
                 ><%=publicacion.titulo%> </a
               ><span class="btn btn-outline-success rounded-pill"
                 ><%=publicacion.votos%></span

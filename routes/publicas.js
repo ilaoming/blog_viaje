@@ -47,6 +47,7 @@ router.get("/", function (req, res) {
 
     connection.query(query, function (error, filas, campos) {
       res.render("index", {
+        mensaje: req.flash("mensaje"),
         publicaciones: filas,
         busqueda: busqueda,
         pagina: pagina,
@@ -152,6 +153,7 @@ router.get("/detalles", function (req, res) {
       if (filas.length > 0) {
         res.render("detalles", { publicaciones: filas });
       } else {
+        req.flash("mensaje", "Publicación no encontrada");
         res.redirect("/");
       }
     });
