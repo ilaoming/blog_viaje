@@ -25,3 +25,7 @@ p{
   background-image: url("../images/fondo-registro.png");
   color :aliceblue !important;
 }
+
+.avatar{
+  width: 45px;
+}

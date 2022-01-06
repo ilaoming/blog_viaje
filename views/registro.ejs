@@ -16,7 +16,7 @@
       <h1 class="mt-4">Registro de autores</h1>
       <P class="text-white">Ingresa tus datos para ser un nuevo autor</P>
       <div class="row">
-        <form action="/procesar_registro" method="post">
+        <form action="/procesar_registro" method="post" enctype="multipart/form-data">
           <label for="email">Email</label>
           <div class="input-group mb-3">
             <span class="input-group-text" id="email"
@@ -60,6 +60,13 @@
               placeholder="Ingrese Pseudonimo"
               required="true"
             />
+          </div>
+
+          <div class="mb-3">
+            <label for="avatar" class="form-label"
+              >Default file input example</label
+            >
+            <input class="form-control" type="file" id="avatar" name="avatar"/>
           </div>
 
           <input type="submit" class="btn btn-primary mb-3" value="Continuar" />

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
+var path = require("path");
 
 var pool = mysql.createPool({
   connectionLimit: 20,
@@ -36,7 +37,7 @@ router.get("/", function (req, res) {
     }
     query = `
     SELECT
-    publicaciones.id id, titulo, resumen, foto, fecha_hora, pseudonimo, votos
+    publicaciones.id id, titulo, resumen, foto, fecha_hora, pseudonimo, votos, avatar
     FROM publicaciones
     INNER JOIN autores
     ON publicaciones.autor_id = autores.id
@@ -46,6 +47,7 @@ router.get("/", function (req, res) {
     `;
 
     connection.query(query, function (error, filas, campos) {
+      const x = filas
       res.render("index", {
         mensaje: req.flash("mensaje"),
         publicaciones: filas,
@@ -102,9 +104,34 @@ router.post("/procesar_registro", function (req, res) {
           )
           `;
             connection.query(query, function (error, filas, campos) {
-              console.log(req.body);
-              req.flash("mensaje", "Usuario Registrado");
-              res.redirect("/registro");
+              if (req.files && req.files.avatar) {
+                const archivoAvatar = req.files.avatar;
+                const id = filas.insertId;
+                const nombreArchivo = `${id}${path.extname(
+                  archivoAvatar.name
+                )}`;
+                archivoAvatar.mv(
+                  `./public/avatars/${nombreArchivo}`,
+                  (error) => {
+                    const consultarAvatar = `
+                        UPDATE 
+                        autores
+                        SET avatar = ${connection.escape(nombreArchivo)}
+                        WHERE id = ${connection.escape(id)}  
+                  `;
+                    connection.query(
+                      consultarAvatar,
+                      function (error, filas, campos) {
+                        req.flash("mensaje", "Usuario registrado con avatar");
+                        res.redirect("/registro");
+                      }
+                    );
+                  }
+                );
+              } else {
+                req.flash("mensaje", "Usuario Registrado");
+                res.redirect("/registro");
+              }
             });
           }
         });
