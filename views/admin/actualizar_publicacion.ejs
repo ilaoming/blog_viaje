@@ -13,7 +13,7 @@
       </h5>
       <% } %>
 
-      <form action="/admin/procesar_actualizar" method="post">
+      <form action="/admin/procesar_actualizar" method="post" enctype="multipart/form-data">
         <div class="mb-2">
           <input
             type="hidden"
@@ -53,20 +53,9 @@
           />
         </div>
 
-        <label for="foto">Foto</label>
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="foto"
-            ><i class="fas fa-link"></i
-          ></span>
-          <input
-            type="text"
-            class="form-control"
-            id="foto"
-            name="foto"
-            placeholder="Pega aqui el link de tu foto"
-            aria-label="foto"
-            value="<%=publicacion.foto%>"
-          />
+        <label for="foto">Foto de portada</label>
+        <div class="mb-3">
+          <input class="form-control" type="file" id="foto" name="foto" />
         </div>
 
         <label for="resumen">Resumen</label>

@@ -47,7 +47,6 @@ router.get("/", function (req, res) {
     `;
 
     connection.query(query, function (error, filas, campos) {
-      const x = filas
       res.render("index", {
         mensaje: req.flash("mensaje"),
         publicaciones: filas,

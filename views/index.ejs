@@ -35,12 +35,11 @@
 
 
 
-          <% if (publicacion.avatar && publicacion.avatar != "") { %>
+          <% if (publicacion.foto && publicacion.foto != "") { %>
             <img
             class="card-img-top mt-2 rounded img-post"
             src="/portadas/<%= publicacion.foto %>"
-            alt="Card image cap"
-          />
+            alt="Card image cap"/>
           <% } else { %>
             <img
             class="card-img-top mt-2 rounded img-post"
