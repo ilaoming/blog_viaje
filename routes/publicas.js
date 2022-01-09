@@ -30,9 +30,9 @@ router.get("/", function (req, res) {
       pagina = req.query.pagina ? parseInt(req.query.pagina) : 0;
       if (pagina < 0) {
         pagina = 0;
-      }
+      } 
       modificadorPagina = `
-      LIMIT 4 OFFSET ${pagina * 4}
+      LIMIT 8 OFFSET ${pagina * 8}
       `;
     }
     query = `
