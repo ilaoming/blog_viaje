@@ -63,7 +63,7 @@ router.post("/admin/procesar_agregar", function (req, res) {
     `;
     connection.query(query, function (error, filas, campos) {
       if (req.files && req.files.foto) {
-        const archivoPortada = req.files.foto
+        const archivoPortada = req.files.foto;
         const id = filas.insertId;
         const nombreArchivo = `${id}${path.extname(archivoPortada.name)}`;
         console.log(nombreArchivo);
@@ -134,8 +134,8 @@ router.post("/admin/procesar_actualizar", (req, res) => {
     `;
       connection.query(consulta, (error, filas, campos) => {
         if (req.files && req.files.foto) {
-          const archivoPortada = req.files.foto
-          const id = req.body.id
+          const archivoPortada = req.files.foto;
+          const id = req.body.id;
           const nombreArchivo = `${id}${path.extname(archivoPortada.name)}`;
           archivoPortada.mv(`./public/portadas/${nombreArchivo}`, (error) => {
             const consultarPortada = `
@@ -181,6 +181,25 @@ router.get("/admin/procesar_eliminar", function (req, res) {
       res.redirect("/admin/index");
     });
     connection.release();
+  });
+});
+
+router.get("/admin/perfil", function (req, res) {
+  pool.getConnection(function (err, connection) {
+    console.log(req.session.usuario.id);
+    const query = `
+    SELECT
+    COUNT(autor_id)
+    FROM
+    publicaciones
+    WHERE
+    autor_id = ${connection.escape(req.session.usuario.id)}
+    `;
+    connection.query(query, function (error, filas, campos) {
+      console.log(filas);
+      let mensaje = req.flash("mensaje", "");
+      res.render("admin/perfil", { usuario: filas, mensaje: mensaje });
+    });
   });
 });
 

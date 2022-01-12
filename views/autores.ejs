@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <% include ./partials/head %>
+    <title>Blog de Viajes / Registro</title>
+  </head>
+  <body>
+    <% include ./partials/encabezado_publico %>
+    <div class="container mt-4 col-md-4">
+      <h1>Autores</h1>
+      <h4>Conoce a nuestros autores:</h4>
+
+      <% if (mensaje && mensaje.length > 0) { %>
+      <h5 class="text-white mt-4">
+        <i class="fas fa-info-circle"></i> <%=mensaje%>
+      </h5>
+      <% } %> <% autores.forEach(autor => { %>
+      <div class="card my-2 ml-auto">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <h6 class="section dark">
+              <% if (autor.avatar && autor.avatar != "") { %>
+              <img
+                class="avatar"
+                src="avatars/<%=autor.avatar%>"
+                alt="Avatar"
+              />
+              <% } else { %>
+              <img class="avatar" src="avatars/none.png" alt="" />
+              <% } %> <%=autor.pseudonimo%>
+            </h6>
+          </li>
+        </ul>
+        <ul>
+          <% autor.publicaciones.forEach(publicacion => { %>
+          <li class="mt-2">
+            <a href="/detalles?id=<%=publicacion.id%>" class="card-enlace">
+                <%=publicacion.titulo%>
+            </a>
+          </li>
+          <% }) %>
+        </ul>
+      </div>
+      <% }) %>
+    </div>
+
+    <% include ./partials/pie %> <% include ./partials/script %>
+  </body>
+</html>

@@ -6,9 +6,11 @@ body{
 p{
   color: black !important;
 }
+ul {list-style-type: none !important;}
 
 .card-enlace{
   text-decoration: none !important;
+  color: black;
 }
 
 .text-logo{
@@ -28,4 +30,8 @@ p{
 
 .avatar{
   width: 45px;
+}
+
+.avatar-login{
+  width: 55px;
 }

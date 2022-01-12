@@ -10,17 +10,22 @@
           <a class="nav-link" href="/admin/index"><i class="fas fa-home"></i> Inicio </a>
         </li>
         <li class="nav-item mx-auto">
-          <a class="nav-link" href="#"><i class="fas fa-user-tie"></i> Autores</a>
-        </li>
-        <li class="nav-item mx-auto">
             <a class="nav-link" href="#"><i class="fas fa-cogs"></i> Herramientas</a>
           </li>
       </ul>
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item mx-auto">
-            <a class="nav-link" href="/procesar_cerrar_sesion"><span class=""><i class="fas fa-user-secret"></i><%=usuario.pseudonimo%></span> | Cerrar Sesion</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class=""><img class="avatar-login" src="../avatars/<%=usuario.avatar%>" alt=""> <%=usuario.pseudonimo%></span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/admin/perfil">Mi Perfil</a></li>
+            <li><a class="dropdown-item" href="/procesar_cerrar_sesion">Cerrar Sesion</a></li>
+          </ul>
         </li>
       </ul>
+
+      
     </div>
   
   </nav>

@@ -30,7 +30,7 @@ router.get("/", function (req, res) {
       pagina = req.query.pagina ? parseInt(req.query.pagina) : 0;
       if (pagina < 0) {
         pagina = 0;
-      } 
+      }
       modificadorPagina = `
       LIMIT 8 OFFSET ${pagina * 8}
       `;
@@ -171,13 +171,13 @@ router.get("/detalles", function (req, res) {
   pool.getConnection(function (err, connection) {
     const query = `
     SELECT 
-    titulo,contenido,foto
+    titulo,contenido,foto,votos
     FROM publicaciones 
     WHERE id = ${connection.escape(req.query.id)}
     `;
     connection.query(query, function (error, filas, campo) {
       if (filas.length > 0) {
-        res.render("detalles", { publicaciones: filas });
+        res.render("detalles", { publicaciones: filas,id:req.query.id });
       } else {
         req.flash("mensaje", "Publicación no encontrada");
         res.redirect("/");
@@ -186,4 +186,68 @@ router.get("/detalles", function (req, res) {
     connection.release();
   });
 });
+
+router.get("/autores", function (req, res) {
+  pool.getConnection((err, connection) => {
+    const consulta = `
+      SELECT autores.id id, pseudonimo, avatar, publicaciones.id publicacion_id, titulo
+      FROM autores
+      INNER JOIN
+      publicaciones
+      ON
+      autores.id = publicaciones.autor_id
+      ORDER BY autores.id DESC, publicaciones.fecha_hora DESC
+    `
+    connection.query(consulta, (error, filas, campos) => {
+      autores = []
+      ultimoAutorId = undefined
+      filas.forEach(registro => {
+        if (registro.id != ultimoAutorId){
+          ultimoAutorId = registro.id
+          autores.push({
+            id: registro.id,
+            pseudonimo: registro.pseudonimo,
+            avatar: registro.avatar,
+            publicaciones: []
+          })
+        }
+        autores[autores.length-1].publicaciones.push({
+          id: registro.publicacion_id,
+          titulo: registro.titulo
+        })
+      });
+      let mensaje = req.flash("mensaje")
+      res.render('autores', { autores: autores, mensaje: mensaje})
+    })
+    connection.release()
+  })
+});
+
+router.get('/detalles/votar',function (req,res) { 
+  pool.getConnection(function (err,connection) { 
+    const consulta = `
+    SELECT * FROM 
+    publicaciones 
+    WHERE id = ${req.query.id} 
+    `
+    connection.query(consulta,function (error,filas,campos) { 
+      if (filas.length>0) {
+        const query = `
+        UPDATE 
+        publicaciones
+        SET
+        votos = votos + 1
+        WHERE id = ${req.query.id} 
+        `
+        connection.query(query,function (error,filas,campos) { 
+        res.redirect(`/detalles?id=${req.query.id}`)
+        })
+      } else {
+        req.flash("mensaje", "Publicación no encontrada");
+        res.redirect("/");
+      }
+     })
+     connection.release()
+   })
+ })
 module.exports = router;
