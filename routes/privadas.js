@@ -1,3 +1,4 @@
+const { log } = require("console");
 const express = require("express");
 const router = express.Router();
 const mysql = require("mysql");
@@ -186,20 +187,52 @@ router.get("/admin/procesar_eliminar", function (req, res) {
 
 router.get("/admin/perfil", function (req, res) {
   pool.getConnection(function (err, connection) {
-    console.log(req.session.usuario.id);
+    let saveVotos = [];
     const query = `
-    SELECT
-    COUNT(autor_id)
+    SELECT 
+     COUNT(*)
     FROM
-    publicaciones
+      publicaciones
     WHERE
-    autor_id = ${connection.escape(req.session.usuario.id)}
+     autor_id= ${connection.escape(req.session.usuario.id)}
     `;
-    connection.query(query, function (error, filas, campos) {
-      console.log(filas);
-      let mensaje = req.flash("mensaje", "");
-      res.render("admin/perfil", { usuario: filas, mensaje: mensaje });
+
+    const queryVotos = `
+    SELECT 
+    SUM(votos)
+   FROM
+     publicaciones
+   WHERE
+    autor_id= ${connection.escape(req.session.usuario.id)}
+    `;
+    
+    connection.query(queryVotos, function (error, filas, campos) {
+      let numPublicaciones = [];
+      const votos = JSON.stringify(filas);
+      for (let index = 0; index < votos.length; index++) {
+        if (!isNaN(votos[index])) {
+          saveVotos.push(votos[index]);
+        }
+      }
     });
+
+    connection.query(query, function (error, filas, campos) {
+      let numPublicaciones = [];
+      const array = JSON.stringify(filas);
+      for (let index = 0; index < array.length; index++) {
+        if (!isNaN(array[index])) {
+          numPublicaciones.push(array[index]);
+        }
+      }
+      let mensaje = req.flash("mensaje", "");
+      res.render("admin/perfil", {
+        usuario: req.session.usuario,
+        mensaje: mensaje,
+        numPublicaciones: numPublicaciones,
+        votos : saveVotos
+      });
+    });
+    connection.release();
   });
 });
 
