@@ -34,12 +34,12 @@ router.get("/api/v1/publicaciones", function (req, res) {
 
     connection.query(query, function (error, filas, campos) {
       if (filas.length > 0) {
-        res.status(200)
+        res.status(200);
         res.json({ data: filas });
       } else {
         res.status(404);
         res.send({
-          erros: [
+          errors: [
             `No se encontraron resultados para la busqueda : ${busqueda}`,
           ],
         });
@@ -63,12 +63,12 @@ router.get("/api/v1/publicaciones/:id", function (req, res) {
 
     connection.query(query, function (error, filas, campos) {
       if (filas.length > 0) {
-        res.status(200)
+        res.status(200);
         res.json({ data: filas[0] });
       } else {
         res.status(404);
         res.send({
-          erros: [`No se encontro la publicacion : #${req.params.id}`],
+          errors: [`No se encontro la publicacion : #${req.params.id}`],
         });
       }
     });
@@ -102,12 +102,12 @@ router.get("/api/v1/autores/:id", function (req, res) {
 
     connection.query(query, function (error, filas, campos) {
       if (filas.length > 0) {
-        res.status(200)
+        res.status(200);
         res.json({ data: filas[0] });
       } else {
         res.status(404);
         res.send({
-          erros: [`No se encontro el autor : #${req.params.id}`],
+          errors: [`No se encontro el autor : #${req.params.id}`],
         });
       }
     });
@@ -137,12 +137,12 @@ router.post("/api/v1/autores", function (req, res) {
         if (myData[0].email == email) {
           res.status(400);
           res.send({
-            erros: [`El Email : ${email} ya se enceuntra en uso`],
+            errors: [`El Email : ${email} ya se enceuntra en uso`],
           });
         } else {
           res.status(400);
           res.send({
-            erros: [`El Pseudonimo : ${pseudonimo} ya se enceuntra en uso`],
+            errors: [`El Pseudonimo : ${pseudonimo} ya se enceuntra en uso`],
           });
         }
       } else {
@@ -160,7 +160,7 @@ router.post("/api/v1/autores", function (req, res) {
           const last_id = filas.insertId;
           const queryConsulta = `SELECT * FROM autores WHERE id=${last_id}`;
           connection.query(queryConsulta, function (error, filas, campos) {
-            res.status(200)
+            res.status(200);
             res.json({ data: filas[0] });
           });
         });
@@ -210,14 +210,14 @@ router.post("/api/v1/publicaciones", function (req, res) {
           WHERE id = ${last_id}
           `;
           connection.query(queryConsulta, function (error, filas, campos) {
-            res.status(200)
+            res.status(200);
             res.json({ data: filas[0] });
           });
         });
       } else {
         res.status(401);
         res.send({
-          erros: [`Email o Contraseña incorrecto`],
+          errors: [`Email o Contraseña incorrecto`],
         });
       }
     });
@@ -227,10 +227,10 @@ router.post("/api/v1/publicaciones", function (req, res) {
 
 //DELETE /api/v1/publicaciones/<id>?email=<email>&contrasena=<contrasena>
 router.delete("/api/v1/publicaciones/:id", function (req, res) {
-  pool.getConnection(function (err,connection) { 
+  pool.getConnection(function (err, connection) {
     const email = req.query.email.toLowerCase().trim();
     const contrasena = req.query.contrasena;
-    const id = req.params.id
+    const id = req.params.id;
 
     const queryLogin = `
     SELECT * FROM 
@@ -239,17 +239,17 @@ router.delete("/api/v1/publicaciones/:id", function (req, res) {
     email = ${connection.escape(email)}
     AND
     contrasena = ${connection.escape(contrasena)}
-    `
-    connection.query(queryLogin,function (error,filas,campos) { 
-      if (filas.length>0) {
+    `;
+    connection.query(queryLogin, function (error, filas, campos) {
+      if (filas.length > 0) {
         const myDataLogin = Object.values(filas);
         const queryPublicaciones = `
         SELECT *
         FROM
         publicaciones 
         WHERE id = ${connection.escape(id)}
-        `
-        connection.query(queryPublicaciones,function (error,filas,campos) { 
+        `;
+        connection.query(queryPublicaciones, function (error, filas, campos) {
           if (filas.length > 0) {
             const myDataPublicacion = Object.values(filas);
             const queryDeletePublicaciones = `
@@ -258,36 +258,35 @@ router.delete("/api/v1/publicaciones/:id", function (req, res) {
             publicaciones
             WHERE
             id = ${id}
-            `
+            `;
             if (myDataLogin[0].id == myDataPublicacion[0].autor_id) {
-              connection.query(queryDeletePublicaciones,function (error,filas,campos) { 
-                res.status(202)
-                res.send({info : [`Publicacion codigo: ${id} eliminada`]})
-               })
+              connection.query(
+                queryDeletePublicaciones,
+                function (error, filas, campos) {
+                  res.status(202);
+                  res.send({ info: [`Publicacion codigo: ${id} eliminada`] });
+                }
+              );
             } else {
               res.status(403);
               res.send({
-                erros: [`Esta publicacion no le pertenece`],
-               });
+                errors: [`Esta publicacion no le pertenece`],
+              });
             }
           } else {
-            res.status(404)
-            res.send({erros:[
-              `Publicacion codigo : ${id} no encontrada`
-            ]})
-
+            res.status(404);
+            res.send({ errors: [`Publicacion codigo : ${id} no encontrada`] });
           }
-         })
+        });
       } else {
-        res.status(401)
+        res.status(401);
         res.send({
-          erros: [`Email o Contraseña incorrecto`],
-         });
+          errors: [`Email o Contraseña incorrecto`],
+        });
       }
-
-     })
-     connection.release()
-   })
+    });
+    connection.release();
+  });
 });
 
 module.exports = router;

@@ -187,49 +187,31 @@ router.get("/admin/procesar_eliminar", function (req, res) {
 
 router.get("/admin/perfil", function (req, res) {
   pool.getConnection(function (err, connection) {
-    let saveVotos = [];
-    const query = `
-    SELECT 
-     COUNT(*)
-    FROM
-      publicaciones
-    WHERE
-     autor_id= ${connection.escape(req.session.usuario.id)}
+    const queryPublicaciones = `
+        SELECT 
+        COUNT(*)
+        AS
+        total,
+        SUM(votos)
+        AS 
+        totalVotos
+        FROM
+        publicaciones
+        WHERE
+        autor_id= ${connection.escape(req.session.usuario.id)}
     `;
 
-    const queryVotos = `
-    SELECT 
-    SUM(votos)
-   FROM
-     publicaciones
-   WHERE
-    autor_id= ${connection.escape(req.session.usuario.id)}
-    `;
-    
-    connection.query(queryVotos, function (error, filas, campos) {
-      let numPublicaciones = [];
-      const votos = JSON.stringify(filas);
-      for (let index = 0; index < votos.length; index++) {
-        if (!isNaN(votos[index])) {
-          saveVotos.push(votos[index]);
-        }
-      }
-    });
+    connection.query(queryPublicaciones, function (error, filas, campos) {
+      const myData = Object.values(filas);
+      const numPublicaciones = myData[0].total;
+      const totalVotos = myData[0].totalVotos;
 
-    connection.query(query, function (error, filas, campos) {
-      let numPublicaciones = [];
-      const array = JSON.stringify(filas);
-      for (let index = 0; index < array.length; index++) {
-        if (!isNaN(array[index])) {
-          numPublicaciones.push(array[index]);
-        }
-      }
       let mensaje = req.flash("mensaje", "");
       res.render("admin/perfil", {
         usuario: req.session.usuario,
         mensaje: mensaje,
         numPublicaciones: numPublicaciones,
-        votos : saveVotos
+        votos: totalVotos,
       });
     });
     connection.release();
